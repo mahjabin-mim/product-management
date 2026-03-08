@@ -1,0 +1,6 @@
+@ProductValidation_HostAddress = http://localhost:5286
+
+GET {{ProductValidation_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
