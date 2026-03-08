@@ -7,5 +7,6 @@ namespace ProductValidation.Services.Interfaces
     public interface IProductGetService
     {
         IEnumerable<ReadProductDto> getAllService();
+        IEnumerable<ReadProductDto> getProductInRangeService(decimal minPrice, decimal maxPrice);
     }
 }

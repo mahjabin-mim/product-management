@@ -46,5 +46,12 @@ namespace ProductValidation.Controllers
             var product = setService.DeleteProductService(id);
             return Ok(product);
         }
-    }
-}
+
+        [HttpGet("getbyrange")]
+        public IActionResult GetByRange([FromQuery] decimal minPrice, [FromQuery] decimal maxPrice)
+        {
+            var productList = getService.getProductInRangeService(minPrice, maxPrice);
+            return Ok(productList);
+        }
+        
+}}

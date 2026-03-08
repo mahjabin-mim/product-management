@@ -15,7 +15,8 @@ namespace ProductValidation.Services
         }
         public IEnumerable<ReadProductDto> getAllService()
         {
-            var productList = dbContext.Products.AsNoTracking().Select(p => new ReadProductDto
+            var productList = dbContext.Products.AsNoTracking()
+            .Select(p => new ReadProductDto
             {
                 Name = p.Name,
                 Price = p.Price,
@@ -24,7 +25,7 @@ namespace ProductValidation.Services
                 Brand = p.Brand
             })
             .ToList();
-            
+
             return productList;      
         }
 
@@ -78,6 +79,23 @@ namespace ProductValidation.Services
             {
                 return false;
             }
-        } 
+        }
+
+         public IEnumerable<ReadProductDto> getProductInRangeService(decimal minPrice, decimal maxPrice)
+        {
+            var productList = dbContext.Products.AsNoTracking()
+                .Where(p => p.Price >= minPrice && p.Price <= maxPrice)
+                .Select(p => new ReadProductDto
+                {
+                    Name = p.Name,
+                    Price = p.Price,
+                    Stock = p.Stock,
+                    Category = p.Category,
+                    Brand = p.Brand
+                })
+                .ToList();
+
+                return productList;
+        }
     }
 }
