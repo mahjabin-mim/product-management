@@ -27,16 +27,24 @@ namespace ProductValidation.Controllers
         }
 
         [HttpPost("create")]
-        public IActionResult Create(CreateProductDto createProductDto)
+        public IActionResult Create([FromBody]CreateProductDto createProductDto)
         {
             var product = setService.CreateProductService(createProductDto);
             return Ok(product);
         }
 
-        // [HttpPut("update")]
-        // public IActionResult Update(UpdateProductDto updateProductDto)
-        // {
-        //     var product = setService.UpdateProductService(updateProductDto);
-        // }
+        [HttpPut("update/{id}")]
+        public IActionResult Update([FromRoute] int id, [FromBody]UpdateProductDto updateProductDto)
+        {
+            var product = setService.UpdateProductService(id, updateProductDto);
+            return Ok(product);
+        }
+
+        [HttpDelete("delete/{id}")]
+        public IActionResult Delete([FromRoute] int id)
+        {
+            var product = setService.DeleteProductService(id);
+            return Ok(product);
+        }
     }
 }

@@ -7,19 +7,19 @@ namespace ProductValidation.Models
         [Key]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Name is required")]
+        [Required]
         public required string Name { get; set; }
 
-        [Required(ErrorMessage = "Price is required")]
+        [Required]
         public required decimal Price { get; set; }
 
-        [Required(ErrorMessage = "Stock is required")]
+        [Required]
         public required int Stock { get; set; }
 
-        [Required(ErrorMessage = "Category is required")]
+        [Required]
         public required string Category { get; set; }
 
-        [Required(ErrorMessage = "Brand is required")]
+        [Required]
         public required string Brand { get; set; }
     }
 }

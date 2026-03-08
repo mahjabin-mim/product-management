@@ -5,16 +5,24 @@ using ProductValidation.Data;
 
 namespace ProductValidation.Services
 {
-    public class ProductService : IProductGetService
+    public class ProductService : IProductGetService, IProductSetService
     {
         private readonly AppDbContext dbContext;
         public ProductService(AppDbContext dbContext)
         {
             this.dbContext = dbContext;
         }
-        public IEnumerable<Product> getAllService()
+        public IEnumerable<ReadProductDto> getAllService()
         {
-            return dbContext.Products.ToList();      
+            var productList = dbContext.Products.Select(p => new ReadProductDto
+            {
+                Name = p.Name,
+                Price = p.Price,
+                Stock = p.Stock,
+                Category = p.Category,
+                Brand = p.Brand
+            });
+            return productList.ToList();      
         }
 
         public Product CreateProductService(CreateProductDto createProductDto)
@@ -34,15 +42,39 @@ namespace ProductValidation.Services
             return newProduct;   
         }
 
-        // public bool UpdateProductService(UpdateProductDto updateProductDto)
-        // {
-        //     var product = 
-        // }
+        public Product UpdateProductService(int id, UpdateProductDto updateProductDto)
+        {
+            var product = dbContext.Products.FirstOrDefault(p => p.Id == id);
+            if (product != null)
+            {
+                product.Name = updateProductDto.Name;
+                product.Price = updateProductDto.Price;
+                product.Stock = updateProductDto.Stock;
+                product.Category = updateProductDto.Category;
+                product.Brand = updateProductDto.Brand;
 
-        // public bool DeleteProductService(int id)
-        // {
-        //     var product = 
-        // }
-        
+                dbContext.SaveChanges();
+                return product;
+            }
+            else
+            {
+                return null; 
+            }
+        }
+
+        public bool DeleteProductService(int id)
+        {
+            var product = dbContext.Products.FirstOrDefault(p => p.Id == id);
+            if (product != null)
+            {
+                dbContext.Products.Remove(product);
+                dbContext.SaveChanges();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        } 
     }
 }
