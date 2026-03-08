@@ -2,6 +2,7 @@ using ProductValidation.Services.Interfaces;
 using ProductValidation.DTOs.Product;
 using ProductValidation.Models; 
 using ProductValidation.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace ProductValidation.Services
 {
@@ -14,15 +15,17 @@ namespace ProductValidation.Services
         }
         public IEnumerable<ReadProductDto> getAllService()
         {
-            var productList = dbContext.Products.Select(p => new ReadProductDto
+            var productList = dbContext.Products.AsNoTracking().Select(p => new ReadProductDto
             {
                 Name = p.Name,
                 Price = p.Price,
                 Stock = p.Stock,
                 Category = p.Category,
                 Brand = p.Brand
-            });
-            return productList.ToList();      
+            })
+            .ToList();
+            
+            return productList;      
         }
 
         public Product CreateProductService(CreateProductDto createProductDto)
