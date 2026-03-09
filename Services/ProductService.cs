@@ -1,8 +1,6 @@
 using ProductValidation.Services.Interfaces;
 using ProductValidation.DTOs.Product;
 using ProductValidation.Models; 
-using ProductValidation.Data;
-using Microsoft.EntityFrameworkCore;
 using ProductValidation.Repositories;
 
 namespace ProductValidation.Services
@@ -10,11 +8,14 @@ namespace ProductValidation.Services
     public class ProductService : IProductGetService, IProductSetService
     {
         private readonly IProductRepository productRepository;
+        private readonly ILogger<ProductService> logger;
 
-        public ProductService(IProductRepository productRepository)
+        public ProductService(IProductRepository productRepository, ILogger<ProductService> logger)
         {
             this.productRepository = productRepository;
+            this.logger = logger;
         }
+
         public IEnumerable<ReadProductDto> GetAllService()
         {
             var productList = productRepository.GetAll()
@@ -43,6 +44,13 @@ namespace ProductValidation.Services
             };
 
             productRepository.Create(newProduct);
+
+            logger.LogInformation(
+                "Product {ProductName} created at {TimeStamp}",
+                newProduct.Name,
+                DateTime.UtcNow
+            );
+            
             return newProduct;   
         }
 
