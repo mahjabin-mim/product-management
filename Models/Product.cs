@@ -17,9 +17,10 @@ namespace ProductValidation.Models
         public required int Stock { get; set; }
 
         [Required]
-        public required string Category { get; set; }
+        public required string Brand { get; set; }
 
         [Required]
-        public required string Brand { get; set; }
+        public int CategoryId { get; set; }
+        public virtual Category? Category { get; set; }
     }
 }

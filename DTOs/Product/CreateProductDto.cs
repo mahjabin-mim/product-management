@@ -4,14 +4,19 @@ namespace ProductValidation.DTOs.Product
 {
     public class CreateProductDto
     {
+        [Required]
         public required string Name { get; set; }
 
+        [Required]
         public required decimal Price { get; set; }
 
+        [Required]
         public required int Stock { get; set; }
 
-        public required string Category { get; set; }
+        [Required]
+        public int CategoryId { get; set; }
 
+        [Required]
         public required string Brand { get; set; }
     }
 }

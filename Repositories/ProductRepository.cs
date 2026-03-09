@@ -1,6 +1,5 @@
 using ProductValidation.Data;
 using ProductValidation.Models;
-using ProductValidation.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace ProductValidation.Repositories
@@ -17,6 +16,7 @@ namespace ProductValidation.Repositories
         public IEnumerable<Product> GetAll()
         {
             return dbContext.Products
+                .Include(p => p.Category) // eager loading
                 .AsNoTracking()
                 .ToList();
         }
@@ -24,6 +24,7 @@ namespace ProductValidation.Repositories
         public Product? GetById(int id)
         {
             return dbContext.Products
+                .AsNoTracking()
                 .FirstOrDefault(p => p.Id == id);
         }
 

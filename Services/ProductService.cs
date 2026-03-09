@@ -23,7 +23,7 @@ namespace ProductValidation.Services
                 Name = p.Name,
                 Price = p.Price,
                 Stock = p.Stock,
-                Category = p.Category,
+                CategoryName = p.Category.Name, 
                 Brand = p.Brand
             });
 
@@ -38,7 +38,7 @@ namespace ProductValidation.Services
                 Name = createProductDto.Name,
                 Price = createProductDto.Price,
                 Stock = createProductDto.Stock,
-                Category = createProductDto.Category,
+                CategoryId = createProductDto.CategoryId,
                 Brand = createProductDto.Brand
             };
 
@@ -54,7 +54,7 @@ namespace ProductValidation.Services
                 product.Name = updateProductDto.Name;
                 product.Price = updateProductDto.Price;
                 product.Stock = updateProductDto.Stock;
-                product.Category = updateProductDto.Category;
+                product.CategoryId = updateProductDto.CategoryId;
                 product.Brand = updateProductDto.Brand;
 
                 productRepository.Update(product);
@@ -88,7 +88,7 @@ namespace ProductValidation.Services
                     Name = p.Name,
                     Price = p.Price,
                     Stock = p.Stock,
-                    Category = p.Category,
+                    CategoryName = p.Category.Name, // lazy loading
                     Brand = p.Brand
                 });
 
