@@ -22,7 +22,7 @@ namespace ProductValidation.Controllers
        [HttpGet("getall")]
        public IActionResult GetALL()
         {
-            var productList = getService.getAllService();
+            var productList = getService.GetAllService();
             return Ok(productList);
         }
 
@@ -50,7 +50,7 @@ namespace ProductValidation.Controllers
         [HttpGet("getbyrange")]
         public IActionResult GetByRange([FromQuery] decimal minPrice, [FromQuery] decimal maxPrice)
         {
-            var productList = getService.getProductInRangeService(minPrice, maxPrice);
+            var productList = getService.GetProductInRangeService(minPrice, maxPrice);
             return Ok(productList);
         }
         

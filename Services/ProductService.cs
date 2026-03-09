@@ -3,19 +3,21 @@ using ProductValidation.DTOs.Product;
 using ProductValidation.Models; 
 using ProductValidation.Data;
 using Microsoft.EntityFrameworkCore;
+using ProductValidation.Repositories;
 
 namespace ProductValidation.Services
 {
     public class ProductService : IProductGetService, IProductSetService
     {
-        private readonly AppDbContext dbContext;
-        public ProductService(AppDbContext dbContext)
+        private readonly IProductRepository productRepository;
+
+        public ProductService(IProductRepository productRepository)
         {
-            this.dbContext = dbContext;
+            this.productRepository = productRepository;
         }
-        public IEnumerable<ReadProductDto> getAllService()
+        public IEnumerable<ReadProductDto> GetAllService()
         {
-            var productList = dbContext.Products.AsNoTracking()
+            var productList = productRepository.GetAll()
             .Select(p => new ReadProductDto
             {
                 Name = p.Name,
@@ -23,11 +25,10 @@ namespace ProductValidation.Services
                 Stock = p.Stock,
                 Category = p.Category,
                 Brand = p.Brand
-            })
-            .ToList();
+            });
 
             return productList;      
-        }
+        }       
 
         public Product CreateProductService(CreateProductDto createProductDto)
         {
@@ -41,14 +42,13 @@ namespace ProductValidation.Services
                 Brand = createProductDto.Brand
             };
 
-            dbContext.Products.Add(newProduct);   
-            dbContext.SaveChanges();             
+            productRepository.Create(newProduct);
             return newProduct;   
         }
 
-        public Product UpdateProductService(int id, UpdateProductDto updateProductDto)
+        public Product? UpdateProductService(int id, UpdateProductDto updateProductDto)
         {
-            var product = dbContext.Products.FirstOrDefault(p => p.Id == id);
+            var product = productRepository.GetById(id);
             if (product != null)
             {
                 product.Name = updateProductDto.Name;
@@ -57,7 +57,7 @@ namespace ProductValidation.Services
                 product.Category = updateProductDto.Category;
                 product.Brand = updateProductDto.Brand;
 
-                dbContext.SaveChanges();
+                productRepository.Update(product);
                 return product;
             }
             else
@@ -68,11 +68,10 @@ namespace ProductValidation.Services
 
         public bool DeleteProductService(int id)
         {
-            var product = dbContext.Products.FirstOrDefault(p => p.Id == id);
+            var product = productRepository.GetById(id);
             if (product != null)
             {
-                dbContext.Products.Remove(product);
-                dbContext.SaveChanges();
+                productRepository.Delete(id);
                 return true;
             }
             else
@@ -81,10 +80,9 @@ namespace ProductValidation.Services
             }
         }
 
-         public IEnumerable<ReadProductDto> getProductInRangeService(decimal minPrice, decimal maxPrice)
+         public IEnumerable<ReadProductDto> GetProductInRangeService(decimal minPrice, decimal maxPrice)
         {
-            var productList = dbContext.Products.AsNoTracking()
-                .Where(p => p.Price >= minPrice && p.Price <= maxPrice)
+            var productList = productRepository.GetProductsInRange(minPrice, maxPrice)
                 .Select(p => new ReadProductDto
                 {
                     Name = p.Name,
@@ -92,8 +90,7 @@ namespace ProductValidation.Services
                     Stock = p.Stock,
                     Category = p.Category,
                     Brand = p.Brand
-                })
-                .ToList();
+                });
 
                 return productList;
         }
