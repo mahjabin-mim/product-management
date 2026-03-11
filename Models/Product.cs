@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProductValidation.Models
 {
@@ -20,6 +21,7 @@ namespace ProductValidation.Models
         public required string Brand { get; set; }
 
         [Required]
+        [ForeignKey("CategoryId")]
         public int CategoryId { get; set; }
         public virtual Category? Category { get; set; }
     }

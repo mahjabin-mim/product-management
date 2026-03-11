@@ -3,6 +3,7 @@ using ProductValidation.DTOs.Product;
 using ProductValidation.Models;
 using ProductValidation.Services.Interfaces;
 using ProductValidation.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ProductValidation.Controllers
 {
@@ -12,7 +13,7 @@ namespace ProductValidation.Controllers
     {
        private readonly IProductGetService getService;
        private readonly IProductSetService setService;
-
+       
        public ProductController(IProductGetService getService, IProductSetService setService)
        {
             this.getService = getService;
@@ -53,5 +54,12 @@ namespace ProductValidation.Controllers
             var productList = getService.GetProductInRangeService(minPrice, maxPrice);
             return Ok(productList);
         }
-        
-}}
+
+        [Authorize]
+        [HttpGet("private")]
+        public IActionResult PrivateEndpoint()
+        {
+            return Ok("Only authenticated users can see this");
+        }  
+    }
+}

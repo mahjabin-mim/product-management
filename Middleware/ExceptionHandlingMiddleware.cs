@@ -11,7 +11,7 @@ namespace ProductValidation.Middleware
         private static readonly JsonSerializerOptions jsonOptions = new() 
         { 
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase, 
-            WriteIndented = true
+            WriteIndented = true // pretty formated json
         };
 
         public ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger)

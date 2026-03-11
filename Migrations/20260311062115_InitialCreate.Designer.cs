@@ -11,7 +11,7 @@ using ProductValidation.Data;
 namespace ProductValidation.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260309042759_InitialCreate")]
+    [Migration("20260311062115_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -20,6 +20,9 @@ namespace ProductValidation.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "10.0.3")
+                .HasAnnotation("Proxies:ChangeTracking", false)
+                .HasAnnotation("Proxies:CheckEquality", false)
+                .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
