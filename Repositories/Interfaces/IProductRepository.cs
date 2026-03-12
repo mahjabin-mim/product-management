@@ -1,6 +1,6 @@
 using ProductValidation.Models;
 
-namespace ProductValidation.Repositories
+namespace ProductValidation.Repositories.Interfaces
 {
     public interface IProductRepository
     {

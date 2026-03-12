@@ -1,12 +1,14 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace ProductValidation.DTOs.Auth
+namespace ProductValidation.Models
 {
-    public class LoginDto
+    public class CreateUserDto
     {
         [Required]
         public required string Username { get; set; }
-        [Required]
+        [Required]  
         public required string Password { get; set; }
-    }
+        [Required]
+        public required string Role { get; set; }
+    }  
 }

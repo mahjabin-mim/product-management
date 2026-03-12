@@ -1,14 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using ProductValidation.DTOs.Product;
-using ProductValidation.Models;
 using ProductValidation.Services.Interfaces;
-using ProductValidation.Services;
 using Microsoft.AspNetCore.Authorization;
 
 namespace ProductValidation.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize (Roles = "Admin,User")]
     public class ProductController : ControllerBase
     {
        private readonly IProductGetService getService;
@@ -20,6 +19,7 @@ namespace ProductValidation.Controllers
             this.setService = setService;
        }
 
+        [AllowAnonymous]
        [HttpGet("getall")]
        public IActionResult GetALL()
         {
@@ -41,6 +41,7 @@ namespace ProductValidation.Controllers
             return Ok(product);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("delete/{id}")]
         public IActionResult Delete([FromRoute] int id)
         {
@@ -54,12 +55,5 @@ namespace ProductValidation.Controllers
             var productList = getService.GetProductInRangeService(minPrice, maxPrice);
             return Ok(productList);
         }
-
-        [Authorize]
-        [HttpGet("private")]
-        public IActionResult PrivateEndpoint()
-        {
-            return Ok("Only authenticated users can see this");
-        }  
     }
 }

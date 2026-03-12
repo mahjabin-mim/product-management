@@ -1,6 +1,7 @@
 using ProductValidation.Data;
 using ProductValidation.Models;
 using Microsoft.EntityFrameworkCore;
+using ProductValidation.Repositories.Interfaces;
 
 namespace ProductValidation.Repositories
 {

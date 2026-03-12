@@ -11,7 +11,7 @@ using ProductValidation.Data;
 namespace ProductValidation.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260311062115_InitialCreate")]
+    [Migration("20260312035756_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -74,6 +74,31 @@ namespace ProductValidation.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("ProductValidation.Models.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("ProductValidation.Models.Product", b =>

@@ -1,7 +1,7 @@
 using ProductValidation.Services.Interfaces;
 using ProductValidation.DTOs.Product;
 using ProductValidation.Models; 
-using ProductValidation.Repositories;
+using ProductValidation.Repositories.Interfaces;
 
 namespace ProductValidation.Services
 {
@@ -10,7 +10,8 @@ namespace ProductValidation.Services
         private readonly IProductRepository productRepository;
         private readonly ILogger<ProductService> logger;
 
-        public ProductService(IProductRepository productRepository, ILogger<ProductService> logger)
+        public ProductService(IProductRepository productRepository,
+                              ILogger<ProductService> logger)
         {
             this.productRepository = productRepository;
             this.logger = logger;
@@ -35,7 +36,6 @@ namespace ProductValidation.Services
         {
             var newProduct = new Product
             {
-                Id = new Random().Next(1, 10),
                 Name = createProductDto.Name,
                 Price = createProductDto.Price,
                 Stock = createProductDto.Stock,
@@ -96,7 +96,7 @@ namespace ProductValidation.Services
                     Name = p.Name,
                     Price = p.Price,
                     Stock = p.Stock,
-                    CategoryName = p.Category.Name, // lazy loading
+                    CategoryName = p.Category?.Name, // lazy loading
                     Brand = p.Brand
                 });
 

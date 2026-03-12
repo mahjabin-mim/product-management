@@ -23,6 +23,6 @@ namespace ProductValidation.Models
         [Required]
         [ForeignKey("CategoryId")]
         public int CategoryId { get; set; }
-        public virtual Category? Category { get; set; }
+        public virtual Category Category { get; set; }
     }
 }

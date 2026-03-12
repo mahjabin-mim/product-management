@@ -1,6 +1,6 @@
 using ProductValidation.Models;
-using ProductValidation.Repositories;
 using ProductValidation.DTOs.Category;
+using ProductValidation.Repositories.Interfaces;
 
 namespace ProductValidation.Services
 {

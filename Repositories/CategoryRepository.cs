@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ProductValidation.Data;
 using ProductValidation.Models;
-using ProductValidation.Repositories;
+using ProductValidation.Repositories.Interfaces;
 
 namespace ProductValidation.Repositories
 {
@@ -21,7 +21,7 @@ namespace ProductValidation.Repositories
                 .ToList();
         }
 
-        public Category? GetById(int id)
+        public Category GetById(int id)
         {
             return dbContext.Categories
                 .FirstOrDefault(c => c.Id == id);
@@ -53,7 +53,7 @@ namespace ProductValidation.Repositories
             return true;
         }
 
-        public Category? GetWithProducts(int id)
+        public Category GetWithProducts(int id)
         {
             return dbContext.Categories
                 .Include(c => c.Products) 
