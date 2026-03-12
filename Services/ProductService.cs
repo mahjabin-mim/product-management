@@ -10,8 +10,7 @@ namespace ProductValidation.Services
         private readonly IProductRepository productRepository;
         private readonly ILogger<ProductService> logger;
 
-        public ProductService(IProductRepository productRepository,
-                              ILogger<ProductService> logger)
+        public ProductService(IProductRepository productRepository, ILogger<ProductService> logger)
         {
             this.productRepository = productRepository;
             this.logger = logger;

@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using ProductValidation.Enums;
 
 namespace ProductValidation.Models
 {
@@ -11,6 +12,6 @@ namespace ProductValidation.Models
         [Required]
         public required string Password { get; set; } 
         [Required]
-        public required string? Role { get; set; }
+        public required UserRole Role { get; set; }
     }
 }

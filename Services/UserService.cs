@@ -1,6 +1,7 @@
 using ProductValidation.Models;
 using ProductValidation.Repositories.Interfaces;
 using ProductValidation.Services.Interfaces;
+using ProductValidation.Enums;
 
 namespace ProductValidation.Services
 {
@@ -17,7 +18,7 @@ namespace ProductValidation.Services
             {
                 Username = createUserDto.Username,
                 Password = createUserDto.Password,
-                Role = createUserDto.Role
+                Role = Enum.Parse<UserRole>(createUserDto.Role)
             };
 
             return userRepository.Create(newUser);

@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using ProductValidation.Services.Interfaces;
 using ProductValidation.DTOs.Category;
-using ProductValidation.Models;
-using ProductValidation.Services;
 
 namespace ProductValidation.Controllers
 {
@@ -9,72 +8,18 @@ namespace ProductValidation.Controllers
     [Route("api/[controller]")]
     public class CategoryController : ControllerBase
     {
-        private readonly CategoryService categoryService;
-
-        public CategoryController(CategoryService categoryService)
+        private readonly ICategorySetService setService;
+        public CategoryController(ICategorySetService setService)
         {
-            this.categoryService = categoryService;
-        }
-
-        [HttpGet("getall")]
-        public IActionResult GetAll()
-        {
-            var categories = categoryService.GetAllService();
-            return Ok(categories);
-        }
-
-        [HttpGet("get/{id}")]
-        public IActionResult GetById([FromRoute] int id)
-        {
-            var category = categoryService.UpdateCategoryService(id, null);
-            if (category == null)
-                return NotFound();
-
-            var readDto = new ReadCategoryDto
-            {
-                Name = category.Name,
-            };
-
-            return Ok(readDto);
+            this.setService = setService;
         }
 
         [HttpPost("create")]
-        public IActionResult Create([FromBody] CreateCategoryDto dto)
+        public IActionResult Create([FromBody] CreateCategoryDto createCategoryDto)
         {
-            var category = categoryService.CreateCategoryService(dto);
-
-            var readDto = new ReadCategoryDto
-            {
-                Name = category.Name,
-            };
-
-            return CreatedAtAction(nameof(GetById), new { id = category.Id }, readDto);
+            var category = setService.CreateCategoryService(createCategoryDto);
+            return Ok(category);
         }
-
-        // PUT: api/category/5
-        [HttpPut("update/{id}")]
-        public IActionResult Update([FromRoute] int id, [FromBody] CreateCategoryDto dto)
-        {
-            var category = categoryService.UpdateCategoryService(id, dto);
-            if (category == null)
-                return NotFound();
-
-            var readDto = new ReadCategoryDto
-            {
-                Name = category.Name,
-            };
-
-            return Ok(readDto);
-        }
-
-        [HttpDelete("delete/{id}")]
-        public IActionResult Delete([FromRoute] int id)
-        {
-            var deleted = categoryService.DeleteCategoryService(id);
-            if (!deleted)
-                return NotFound();
-
-            return NoContent();
-        }
+  
     }
 }

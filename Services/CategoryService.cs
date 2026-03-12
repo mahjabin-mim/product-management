@@ -13,43 +13,14 @@ namespace ProductValidation.Services
             this.categoryRepository = categoryRepository;
         }
 
-        public IEnumerable<ReadCategoryDto> GetAllService()
-        {
-            var categoryList = categoryRepository.GetAll()
-            .Select(c => new ReadCategoryDto
-            {
-                Name = c.Name
-            });
-
-            return categoryList;      
-        } 
-        
         public Category CreateCategoryService(CreateCategoryDto createCategoryDto)
         {
-            var category = new Category
+            var newCategory = new Category
             {
-                Id = new Random().Next(1, 10),
                 Name = createCategoryDto.Name
             };
 
-            categoryRepository.Create(category);
-            return category;
-        }
-
-        public Category UpdateCategoryService(int id, CreateCategoryDto createCategoryDto)
-        {
-            var category = categoryRepository.GetById(id);
-            if (category == null) return null;
-
-            category.Name = createCategoryDto.Name;
-            categoryRepository.Update(category);
-
-            return category;
-        }
-
-        public bool DeleteCategoryService(int id)
-        {
-            return categoryRepository.Delete(id);
+            return categoryRepository.Create(newCategory);
         }
     }
 }
