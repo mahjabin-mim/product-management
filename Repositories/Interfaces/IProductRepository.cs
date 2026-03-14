@@ -15,5 +15,7 @@ namespace ProductValidation.Repositories.Interfaces
         bool Delete(int id);
 
         IEnumerable<Product> GetProductsInRange(decimal minPrice, decimal maxPrice);
+        IQueryable<Product> GetProducts();
+
     }
 }

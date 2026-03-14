@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProductValidation.DTOs.Product;
 using ProductValidation.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using ProductValidation.Helpers;
 
 namespace ProductValidation.Controllers
 {
@@ -55,5 +56,14 @@ namespace ProductValidation.Controllers
             var productList = getService.GetProductInRangeService(minPrice, maxPrice);
             return Ok(productList);
         }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public IActionResult GetProducts([FromQuery] QueryParams queryParams)
+        {
+            var result = getService.GetProducts(queryParams);
+            return Ok(result);
+        }
+
     }
 }

@@ -62,5 +62,11 @@ namespace ProductValidation.Repositories
                 .Where(p => p.Price >= minPrice && p.Price <= maxPrice)
                 .ToList();
         }
+
+        public IQueryable<Product> GetProducts()
+        {
+            return dbContext.Products.AsQueryable();
+        }
+
     }
 }

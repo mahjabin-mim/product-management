@@ -2,6 +2,7 @@ using ProductValidation.Services.Interfaces;
 using ProductValidation.DTOs.Product;
 using ProductValidation.Models; 
 using ProductValidation.Repositories.Interfaces;
+using ProductValidation.Helpers;
 
 namespace ProductValidation.Services
 {
@@ -101,5 +102,13 @@ namespace ProductValidation.Services
 
                 return productList;
         }
+
+        public PageResponse<Product> GetProducts(QueryParams queryParams)
+        {
+            var query = productRepository.GetProducts();
+
+            return QueryHelper.ApplyQuery(query, queryParams);
+        }
+
     }
 }
