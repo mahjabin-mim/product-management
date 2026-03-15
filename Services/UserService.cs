@@ -7,10 +7,10 @@ namespace ProductValidation.Services
 {
     public class UserService : IUserSetService
     {
-        private readonly IUserRepository userRepository;
+        private readonly IUserRepository _userRepository;
         public UserService(IUserRepository userRepository)
         {
-            this.userRepository = userRepository;
+            _userRepository = userRepository;
         }
         public User CreateUserService(CreateUserDto createUserDto)
         {
@@ -21,7 +21,7 @@ namespace ProductValidation.Services
                 Role = Enum.Parse<UserRole>(createUserDto.Role)
             };
 
-            return userRepository.Create(newUser);
+            return _userRepository.Create(newUser);
         }
     }
 }

@@ -3,23 +3,27 @@ using ProductValidation.DTOs.Product;
 using ProductValidation.Models; 
 using ProductValidation.Repositories.Interfaces;
 using ProductValidation.Helpers;
+using AutoMapper;
 
 namespace ProductValidation.Services
 {
     public class ProductService : IProductGetService, IProductSetService
     {
-        private readonly IProductRepository productRepository;
-        private readonly ILogger<ProductService> logger;
+        private readonly IProductRepository _productRepository;
+        private readonly ILogger<ProductService> _logger;
 
-        public ProductService(IProductRepository productRepository, ILogger<ProductService> logger)
-        {
-            this.productRepository = productRepository;
-            this.logger = logger;
+        private readonly IMapper _mapper;
+
+        public ProductService(IProductRepository productRepository, ILogger<ProductService> logger, IMapper mapper)
+         {
+            _productRepository = productRepository;
+            _logger = logger;
+            _mapper = mapper;
         }
 
         public IEnumerable<ReadProductDto> GetAllService()
         {
-            var productList = productRepository.GetAll()
+            var productList = _productRepository.GetAll()
             .Select(p => new ReadProductDto
             {
                 Name = p.Name,
@@ -43,9 +47,9 @@ namespace ProductValidation.Services
                 Brand = createProductDto.Brand
             };
 
-            productRepository.Create(newProduct);
+            _productRepository.Create(newProduct);
 
-            logger.LogInformation(
+            _logger.LogInformation(
                 "Product {ProductName} created at {TimeStamp}",
                 newProduct.Name,
                 DateTime.UtcNow
@@ -56,7 +60,7 @@ namespace ProductValidation.Services
 
         public Product? UpdateProductService(int id, UpdateProductDto updateProductDto)
         {
-            var product = productRepository.GetById(id);
+            var product = _productRepository.GetById(id);
             if (product != null)
             {
                 product.Name = updateProductDto.Name;
@@ -65,7 +69,7 @@ namespace ProductValidation.Services
                 product.CategoryId = updateProductDto.CategoryId;
                 product.Brand = updateProductDto.Brand;
 
-                productRepository.Update(product);
+                _productRepository.Update(product);
                 return product;
             }
             else
@@ -76,10 +80,10 @@ namespace ProductValidation.Services
 
         public bool DeleteProductService(int id)
         {
-            var product = productRepository.GetById(id);
+            var product = _productRepository.GetById(id);
             if (product != null)
             {
-                productRepository.Delete(id);
+                _productRepository.Delete(id);
                 return true;
             }
             else
@@ -90,7 +94,7 @@ namespace ProductValidation.Services
 
          public IEnumerable<ReadProductDto> GetProductInRangeService(decimal minPrice, decimal maxPrice)
         {
-            var productList = productRepository.GetProductsInRange(minPrice, maxPrice)
+            var productList =  _productRepository.GetProductsInRange(minPrice, maxPrice)
                 .Select(p => new ReadProductDto
                 {
                     Name = p.Name,
@@ -105,7 +109,7 @@ namespace ProductValidation.Services
 
         public PageResponse<Product> GetProducts(QueryParams queryParams)
         {
-            var query = productRepository.GetProducts();
+            var query = _productRepository.GetProducts();
 
             return QueryHelper.ApplyQuery(query, queryParams);
         }

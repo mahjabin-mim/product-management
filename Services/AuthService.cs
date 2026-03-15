@@ -10,17 +10,17 @@ namespace ProductValidation.Services
     public class AuthService
     {
         private readonly IConfiguration _config;
-        private readonly AppDbContext dbContext;
+        private readonly AppDbContext _dbContext;
 
         public AuthService(IConfiguration config, AppDbContext dbContext)
         {
             _config = config;
-            this.dbContext = dbContext;
+            _dbContext = dbContext;
         }
 
         public string Login(string username, string password)
         {
-            var user = dbContext.Users
+            var user = _dbContext.Users
                 .FirstOrDefault(u => u.Username == username && u.Password == password);
 
             if (user == null)

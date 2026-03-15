@@ -11,34 +11,34 @@ namespace ProductValidation.Controllers
     [Authorize (Roles = "Admin,User")]
     public class ProductController : ControllerBase
     {
-       private readonly IProductGetService getService;
-       private readonly IProductSetService setService;
+       private readonly IProductGetService _getService;
+       private readonly IProductSetService _setService;
        
        public ProductController(IProductGetService getService, IProductSetService setService)
        {
-            this.getService = getService;
-            this.setService = setService;
+            _getService = getService;
+            _setService = setService;
        }
 
         [AllowAnonymous]
        [HttpGet("getall")]
        public IActionResult GetALL()
         {
-            var productList = getService.GetAllService();
+            var productList = _getService.GetAllService();
             return Ok(productList);
         }
 
         [HttpPost("create")]
         public IActionResult Create([FromBody]CreateProductDto createProductDto)
         {
-            var product = setService.CreateProductService(createProductDto);
+            var product = _setService.CreateProductService(createProductDto);
             return Ok(product);
         }
 
         [HttpPut("update/{id}")]
         public IActionResult Update([FromRoute] int id, [FromBody]UpdateProductDto updateProductDto)
         {
-            var product = setService.UpdateProductService(id, updateProductDto);
+            var product = _setService.UpdateProductService(id, updateProductDto);
             return Ok(product);
         }
 
@@ -46,14 +46,14 @@ namespace ProductValidation.Controllers
         [HttpDelete("delete/{id}")]
         public IActionResult Delete([FromRoute] int id)
         {
-            var product = setService.DeleteProductService(id);
+            var product = _setService.DeleteProductService(id);
             return Ok(product);
         }
 
         [HttpGet("getbyrange")]
         public IActionResult GetByRange([FromQuery] decimal minPrice, [FromQuery] decimal maxPrice)
         {
-            var productList = getService.GetProductInRangeService(minPrice, maxPrice);
+            var productList = _getService.GetProductInRangeService(minPrice, maxPrice);
             return Ok(productList);
         }
 
@@ -61,7 +61,7 @@ namespace ProductValidation.Controllers
         [HttpGet]
         public IActionResult GetProducts([FromQuery] QueryParams queryParams)
         {
-            var result = getService.GetProducts(queryParams);
+            var result = _getService.GetProducts(queryParams);
             return Ok(result);
         }
 

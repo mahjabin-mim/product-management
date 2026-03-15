@@ -6,11 +6,11 @@ namespace ProductValidation.Services
 {
     public class CategoryService
     {
-        private readonly ICategoryRepository categoryRepository;
+        private readonly ICategoryRepository _categoryRepository;
 
         public CategoryService(ICategoryRepository categoryRepository)
         {
-            this.categoryRepository = categoryRepository;
+            _categoryRepository = categoryRepository;
         }
 
         public Category CreateCategoryService(CreateCategoryDto createCategoryDto)
@@ -20,7 +20,7 @@ namespace ProductValidation.Services
                 Name = createCategoryDto.Name
             };
 
-            return categoryRepository.Create(newCategory);
+            return _categoryRepository.Create(newCategory);
         }
     }
 }

@@ -8,16 +8,16 @@ namespace ProductValidation.Controllers
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly IUserSetService setService;
+        private readonly IUserSetService _setService;
         public UserController(IUserSetService setService)
         {
-            this.setService = setService;
+            _setService = setService;
         }
         
         [HttpPost("create")]
         public IActionResult Create([FromBody] CreateUserDto createUserDto)
         {
-            var user = setService.CreateUserService(createUserDto);
+            var user = _setService.CreateUserService(createUserDto);
             return Ok(user);
         }
     }
