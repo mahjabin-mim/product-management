@@ -23,29 +23,33 @@ namespace ProductValidation.Services
 
         public IEnumerable<ReadProductDto> GetAllService()
         {
-            var productList = _productRepository.GetAll()
-            .Select(p => new ReadProductDto
-            {
-                Name = p.Name,
-                Price = p.Price,
-                Stock = p.Stock,
-                CategoryName = p.Category.Name, 
-                Brand = p.Brand
-            });
+            var productList = _productRepository.GetAll();
+                // Manual mapping
+                // .Select(p => new ReadProductDto
+                // {
+                //     Name = p.Name,
+                //     Price = p.Price,
+                //     Stock = p.Stock,
+                //     CategoryName = p.Category.Name, 
+                //     Brand = p.Brand
+                // });
 
-            return productList;      
+            return _mapper.Map<IEnumerable<ReadProductDto>>(productList);;      
         }       
 
         public Product CreateProductService(CreateProductDto createProductDto)
         {
-            var newProduct = new Product
-            {
-                Name = createProductDto.Name,
-                Price = createProductDto.Price,
-                Stock = createProductDto.Stock,
-                CategoryId = createProductDto.CategoryId,
-                Brand = createProductDto.Brand
-            };
+            // Manual mapping
+            // var newProduct = new Product
+            // {
+            //     Name = createProductDto.Name,
+            //     Price = createProductDto.Price,
+            //     Stock = createProductDto.Stock,
+            //     CategoryId = createProductDto.CategoryId,
+            //     Brand = createProductDto.Brand
+            // };
+
+            var newProduct = _mapper.Map<Product>(createProductDto);
 
             _productRepository.Create(newProduct);
 
@@ -63,11 +67,14 @@ namespace ProductValidation.Services
             var product = _productRepository.GetById(id);
             if (product != null)
             {
-                product.Name = updateProductDto.Name;
-                product.Price = updateProductDto.Price;
-                product.Stock = updateProductDto.Stock;
-                product.CategoryId = updateProductDto.CategoryId;
-                product.Brand = updateProductDto.Brand;
+                // Manual mapping
+                // product.Name = updateProductDto.Name;
+                // product.Price = updateProductDto.Price;
+                // product.Stock = updateProductDto.Stock;
+                // product.CategoryId = updateProductDto.CategoryId;
+                // product.Brand = updateProductDto.Brand;
+
+                _mapper.Map(updateProductDto, product);
 
                 _productRepository.Update(product);
                 return product;
@@ -92,7 +99,7 @@ namespace ProductValidation.Services
             }
         }
 
-         public IEnumerable<ReadProductDto> GetProductInRangeService(decimal minPrice, decimal maxPrice)
+        public IEnumerable<ReadProductDto> GetProductInRangeService(decimal minPrice, decimal maxPrice)
         {
             var productList =  _productRepository.GetProductsInRange(minPrice, maxPrice)
                 .Select(p => new ReadProductDto
@@ -104,7 +111,7 @@ namespace ProductValidation.Services
                     Brand = p.Brand
                 });
 
-                return productList;
+            return productList;
         }
 
         public PageResponse<Product> GetProducts(QueryParams queryParams)

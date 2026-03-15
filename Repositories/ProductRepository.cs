@@ -7,16 +7,16 @@ namespace ProductValidation.Repositories
 {
     public class ProductRepository : IProductRepository
     {
-        private readonly AppDbContext dbContext;
+        private readonly AppDbContext _dbContext;
 
         public ProductRepository(AppDbContext dbContext)
         {
-            this.dbContext = dbContext;
+            _dbContext = dbContext;
         }
 
         public IEnumerable<Product> GetAll()
         {
-            return dbContext.Products
+            return _dbContext.Products
                 .Include(p => p.Category) // eager loading
                 .AsNoTracking()
                 .ToList();
@@ -24,40 +24,40 @@ namespace ProductValidation.Repositories
 
         public Product? GetById(int id)
         {
-            return dbContext.Products
+            return _dbContext.Products
                 .AsNoTracking()
                 .FirstOrDefault(p => p.Id == id);
         }
 
         public Product Create(Product product)
         {
-            dbContext.Products.Add(product);
-            dbContext.SaveChanges();
+            _dbContext.Products.Add(product);
+            _dbContext.SaveChanges();
             return product;
         }
 
         public Product Update(Product product)
         {
-            dbContext.Products.Update(product);
-            dbContext.SaveChanges();
+            _dbContext.Products.Update(product);
+            _dbContext.SaveChanges();
             return product;
         }
 
         public bool Delete(int id)
         {
-            var product = dbContext.Products.FirstOrDefault(p => p.Id == id);
+            var product = _dbContext.Products.FirstOrDefault(p => p.Id == id);
 
             if (product == null)
                 return false;
 
-            dbContext.Products.Remove(product);
-            dbContext.SaveChanges();
+            _dbContext.Products.Remove(product);
+            _dbContext.SaveChanges();
             return true;
         }
 
         public IEnumerable<Product> GetProductsInRange(decimal minPrice, decimal maxPrice)
         {
-            return dbContext.Products
+            return _dbContext.Products
                 .AsNoTracking()
                 .Where(p => p.Price >= minPrice && p.Price <= maxPrice)
                 .ToList();
@@ -65,7 +65,7 @@ namespace ProductValidation.Repositories
 
         public IQueryable<Product> GetProducts()
         {
-            return dbContext.Products.AsQueryable();
+            return _dbContext.Products.AsQueryable();
         }
 
     }

@@ -6,15 +6,15 @@ namespace ProductValidation.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private readonly AppDbContext dbContext;
+        private readonly AppDbContext _dbContext;
         public UserRepository(AppDbContext dbContext)
         {
-            this.dbContext = dbContext;
+            _dbContext = dbContext;
         }
         public User Create(User user)
         {
-            dbContext.Users.Add(user);
-            dbContext.SaveChanges();
+            _dbContext.Users.Add(user);
+            _dbContext.SaveChanges();
             return user;
         }
     }

@@ -7,17 +7,17 @@ namespace ProductValidation.Repositories
 {
     public class CategoryRepository : ICategoryRepository
     {
-        private readonly AppDbContext dbContext;
+        private readonly AppDbContext _dbContext;
 
         public CategoryRepository(AppDbContext dbContext)
         {
-            this.dbContext = dbContext;
+            _dbContext = dbContext;
         }
 
         public Category Create(Category category)
         {
-            dbContext.Categories.Add(category);
-            dbContext.SaveChanges();
+            _dbContext.Categories.Add(category);
+            _dbContext.SaveChanges();
             return category;
         }
     }
