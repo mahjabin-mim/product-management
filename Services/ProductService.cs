@@ -4,6 +4,7 @@ using ProductValidation.Models;
 using ProductValidation.Repositories.Interfaces;
 using ProductValidation.Helpers;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 namespace ProductValidation.Services
 {
@@ -21,9 +22,9 @@ namespace ProductValidation.Services
             _mapper = mapper;
         }
 
-        public IEnumerable<ReadProductDto> GetAllService()
+        public async Task<IEnumerable<ReadProductDto>> GetAllService()
         {
-            var productList = _productRepository.GetAll();
+            var productList = await _productRepository.GetAll();
                 // Manual mapping
                 // .Select(p => new ReadProductDto
                 // {
@@ -37,7 +38,7 @@ namespace ProductValidation.Services
             return _mapper.Map<IEnumerable<ReadProductDto>>(productList);;      
         }       
 
-        public Product CreateProductService(CreateProductDto createProductDto)
+        public async Task<Product> CreateProductService(CreateProductDto createProductDto)
         {
             // Manual mapping
             // var newProduct = new Product
@@ -51,7 +52,7 @@ namespace ProductValidation.Services
 
             var newProduct = _mapper.Map<Product>(createProductDto);
 
-            _productRepository.Create(newProduct);
+            await _productRepository.Create(newProduct);
 
             _logger.LogInformation(
                 "Product {ProductName} created at {TimeStamp}",
@@ -62,21 +63,14 @@ namespace ProductValidation.Services
             return newProduct;   
         }
 
-        public Product? UpdateProductService(int id, UpdateProductDto updateProductDto)
+        public async Task<Product?> UpdateProductService(int id, UpdateProductDto updateProductDto)
         {
-            var product = _productRepository.GetById(id);
+            var product = await _productRepository.GetById(id);
             if (product != null)
             {
-                // Manual mapping
-                // product.Name = updateProductDto.Name;
-                // product.Price = updateProductDto.Price;
-                // product.Stock = updateProductDto.Stock;
-                // product.CategoryId = updateProductDto.CategoryId;
-                // product.Brand = updateProductDto.Brand;
-
                 _mapper.Map(updateProductDto, product);
 
-                _productRepository.Update(product);
+                await _productRepository.Update(product);
                 return product;
             }
             else
@@ -85,12 +79,12 @@ namespace ProductValidation.Services
             }
         }
 
-        public bool DeleteProductService(int id)
+        public async Task<bool> DeleteProductService(int id)
         {
-            var product = _productRepository.GetById(id);
+            var product = await _productRepository.GetById(id);
             if (product != null)
             {
-                _productRepository.Delete(id);
+                await _productRepository.Delete(id);
                 return true;
             }
             else
@@ -99,26 +93,27 @@ namespace ProductValidation.Services
             }
         }
 
-        public IEnumerable<ReadProductDto> GetProductInRangeService(decimal minPrice, decimal maxPrice)
+        public async Task<IEnumerable<ReadProductDto>> GetProductInRangeService(decimal minPrice, decimal maxPrice)
         {
-            var productList =  _productRepository.GetProductsInRange(minPrice, maxPrice)
-                .Select(p => new ReadProductDto
-                {
-                    Name = p.Name,
-                    Price = p.Price,
-                    Stock = p.Stock,
-                    CategoryName = p.Category?.Name, // lazy loading
-                    Brand = p.Brand
-                });
+            var productList = await _productRepository.GetProductsInRange(minPrice, maxPrice);
+            return productList.Select(p => new ReadProductDto
+            {
+                Name = p.Name,
+                Price = p.Price,
+                Stock = p.Stock,
+                CategoryName = p.Category?.Name, // lazy loading
+                Brand = p.Brand
+            });
 
-            return productList;
         }
 
-        public PageResponse<Product> GetProducts(QueryParams queryParams)
+        // Pagination, Sorting, Filtering, Searching, AutoMapper Projection
+        public async Task<PageResponse<ReadProductDto>> GetProducts(QueryParams queryParams)
         {
-            var query = _productRepository.GetProducts();
+            var query = _productRepository.GetProducts()
+                .ProjectTo<ReadProductDto>(_mapper.ConfigurationProvider);
 
-            return QueryHelper.ApplyQuery(query, queryParams);
+            return await QueryHelper.ApplyQuery(query, queryParams);
         }
 
     }

@@ -1,10 +1,11 @@
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Dynamic.Core;
 
 namespace ProductValidation.Helpers
 {
     public static class QueryHelper
     {
-        public static PageResponse<T> ApplyQuery<T>(
+        public static async Task<PageResponse<T>> ApplyQuery<T>(
             IQueryable<T> query,
             QueryParams queryParams)
         {
@@ -29,13 +30,13 @@ namespace ProductValidation.Helpers
             }
 
             // TOTAL COUNT
-            var count = query.Count();
+            var count = await query.CountAsync();
 
             // PAGINATION
-            var items = query
+            var items = await query
                 .Skip((queryParams.PageNumber - 1) * queryParams.PageSize)
                 .Take(queryParams.PageSize)
-                .ToList();
+                .ToListAsync();
 
             return new PageResponse<T>(
                 items,

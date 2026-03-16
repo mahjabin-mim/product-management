@@ -5,9 +5,9 @@ namespace ProductValidation.Services.Interfaces
 {
     public interface IProductSetService
     {
-        Product CreateProductService(CreateProductDto createProductDto);
-        Product UpdateProductService(int id, UpdateProductDto updateProductDto);
+        public Task<Product> CreateProductService(CreateProductDto createProductDto);
+        public Task<Product?> UpdateProductService(int id, UpdateProductDto updateProductDto);
 
-        bool DeleteProductService(int id);
+        public Task<bool> DeleteProductService(int id);
     }
 }

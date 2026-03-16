@@ -2,70 +2,75 @@ using ProductValidation.Data;
 using ProductValidation.Models;
 using Microsoft.EntityFrameworkCore;
 using ProductValidation.Repositories.Interfaces;
+using ProductValidation.DTOs.Product;
+using AutoMapper.QueryableExtensions;
+using AutoMapper;
 
 namespace ProductValidation.Repositories
 {
     public class ProductRepository : IProductRepository
     {
         private readonly AppDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public ProductRepository(AppDbContext dbContext)
+        public ProductRepository(AppDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
-        public IEnumerable<Product> GetAll()
+        public async Task<IEnumerable<Product>> GetAll()
         {
-            return _dbContext.Products
+            return await _dbContext.Products
                 .Include(p => p.Category) // eager loading
                 .AsNoTracking()
-                .ToList();
+                .ToListAsync();
         }
 
-        public Product? GetById(int id)
+        public async Task<Product?> GetById(int id)
         {
-            return _dbContext.Products
+            return await _dbContext.Products
                 .AsNoTracking()
-                .FirstOrDefault(p => p.Id == id);
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public Product Create(Product product)
+        public async Task<Product> Create(Product product)
         {
             _dbContext.Products.Add(product);
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
             return product;
         }
 
-        public Product Update(Product product)
+        public async Task<Product> Update(Product product)
         {
             _dbContext.Products.Update(product);
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
             return product;
         }
 
-        public bool Delete(int id)
+        public async Task<bool> Delete(int id)
         {
-            var product = _dbContext.Products.FirstOrDefault(p => p.Id == id);
+            var product = await _dbContext.Products.FirstOrDefaultAsync(p => p.Id == id);
 
             if (product == null)
                 return false;
 
             _dbContext.Products.Remove(product);
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
             return true;
         }
 
-        public IEnumerable<Product> GetProductsInRange(decimal minPrice, decimal maxPrice)
+        public async Task<IEnumerable<Product>> GetProductsInRange(decimal minPrice, decimal maxPrice)
         {
-            return _dbContext.Products
+            return await _dbContext.Products
                 .AsNoTracking()
                 .Where(p => p.Price >= minPrice && p.Price <= maxPrice)
-                .ToList();
+                .ToListAsync();
         }
 
-        public IQueryable<Product> GetProducts()
+        public IQueryable<ReadProductDto> GetProducts()
         {
-            return _dbContext.Products.AsQueryable();
+            return _dbContext.Products.AsQueryable().ProjectTo<ReadProductDto>(_mapper.ConfigurationProvider);
         }
 
     }

@@ -1,21 +1,22 @@
+using ProductValidation.DTOs.Product;
 using ProductValidation.Models;
 
 namespace ProductValidation.Repositories.Interfaces
 {
     public interface IProductRepository
     {
-        IEnumerable<Product> GetAll();
+        public Task<IEnumerable<Product>> GetAll();
 
-        Product GetById(int id);
+        public Task<Product> GetById(int id);
 
-        Product Create(Product product);
+        public Task<Product> Create(Product product);
 
-        Product Update(Product product);
+        public Task<Product> Update(Product product);
 
-        bool Delete(int id);
+        public Task<bool> Delete(int id);
 
-        IEnumerable<Product> GetProductsInRange(decimal minPrice, decimal maxPrice);
-        IQueryable<Product> GetProducts();
+        public Task<IEnumerable<Product>> GetProductsInRange(decimal minPrice, decimal maxPrice);
+        IQueryable<ReadProductDto> GetProducts();
 
     }
 }

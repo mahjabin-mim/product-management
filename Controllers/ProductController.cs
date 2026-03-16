@@ -22,46 +22,46 @@ namespace ProductValidation.Controllers
 
         [AllowAnonymous]
        [HttpGet("getall")]
-       public IActionResult GetALL()
+       public async Task<IActionResult> GetALL()
         {
-            var productList = _getService.GetAllService();
+            var productList = await _getService.GetAllService();
             return Ok(productList);
         }
 
         [HttpPost("create")]
-        public IActionResult Create([FromBody]CreateProductDto createProductDto)
+        public async Task<IActionResult> Create([FromBody]CreateProductDto createProductDto)
         {
-            var product = _setService.CreateProductService(createProductDto);
+            var product = await _setService.CreateProductService(createProductDto);
             return Ok(product);
         }
 
         [HttpPut("update/{id}")]
-        public IActionResult Update([FromRoute] int id, [FromBody]UpdateProductDto updateProductDto)
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody]UpdateProductDto updateProductDto)
         {
-            var product = _setService.UpdateProductService(id, updateProductDto);
+            var product = await _setService.UpdateProductService(id, updateProductDto);
             return Ok(product);
         }
 
         [Authorize(Roles = "Admin")]
         [HttpDelete("delete/{id}")]
-        public IActionResult Delete([FromRoute] int id)
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var product = _setService.DeleteProductService(id);
+            var product = await _setService.DeleteProductService(id);
             return Ok(product);
         }
 
         [HttpGet("getbyrange")]
-        public IActionResult GetByRange([FromQuery] decimal minPrice, [FromQuery] decimal maxPrice)
+        public async Task<IActionResult> GetByRange([FromQuery] decimal minPrice, [FromQuery] decimal maxPrice)
         {
-            var productList = _getService.GetProductInRangeService(minPrice, maxPrice);
+            var productList = await _getService.GetProductInRangeService(minPrice, maxPrice);
             return Ok(productList);
         }
 
         [AllowAnonymous]
         [HttpGet]
-        public IActionResult GetProducts([FromQuery] QueryParams queryParams)
+        public async Task<IActionResult> GetProducts([FromQuery] QueryParams queryParams)
         {
-            var result = _getService.GetProducts(queryParams);
+            var result = await _getService.GetProducts(queryParams);
             return Ok(result);
         }
 
