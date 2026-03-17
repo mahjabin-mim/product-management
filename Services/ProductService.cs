@@ -5,19 +5,22 @@ using ProductValidation.Repositories.Interfaces;
 using ProductValidation.Helpers;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using ProductValidation.Repositories;
 
 namespace ProductValidation.Services
 {
     public class ProductService : IProductGetService, IProductSetService
     {
         private readonly IProductRepository _productRepository;
+        private readonly ICategoryRepository _categoryRepository;
         private readonly ILogger<ProductService> _logger;
 
         private readonly IMapper _mapper;
 
-        public ProductService(IProductRepository productRepository, ILogger<ProductService> logger, IMapper mapper)
+        public ProductService(IProductRepository productRepository, ICategoryRepository categoryRepository, ILogger<ProductService> logger, IMapper mapper)
          {
             _productRepository = productRepository;
+            _categoryRepository = categoryRepository;
             _logger = logger;
             _mapper = mapper;
         }
@@ -38,20 +41,30 @@ namespace ProductValidation.Services
             return _mapper.Map<IEnumerable<ReadProductDto>>(productList);;      
         }       
 
-        public async Task<Product> CreateProductService(CreateProductDto createProductDto)
+        public async Task<ReadProductDto> CreateProductService(CreateProductDto createProductDto)
         {
+            if (string.IsNullOrEmpty(createProductDto.CategoryName))
+            {
+                throw new Exception("Category name is required");
+            }
+
+            var category = await _categoryRepository.GetByName(createProductDto.CategoryName);
+            if (category == null)
+            {
+                throw new Exception("Category not found");
+            } 
+
             // Manual mapping
             // var newProduct = new Product
             // {
             //     Name = createProductDto.Name,
             //     Price = createProductDto.Price,
             //     Stock = createProductDto.Stock,
-            //     CategoryId = createProductDto.CategoryId,
+            //     CategoryName = createProductDto.CategoryName,
             //     Brand = createProductDto.Brand
             // };
 
             var newProduct = _mapper.Map<Product>(createProductDto);
-
             await _productRepository.Create(newProduct);
 
             _logger.LogInformation(
@@ -59,19 +72,21 @@ namespace ProductValidation.Services
                 newProduct.Name,
                 DateTime.UtcNow
             );
-            
-            return newProduct;   
+
+            var result = _mapper.Map<ReadProductDto>(newProduct);
+            return result;   
         }
 
-        public async Task<Product?> UpdateProductService(int id, UpdateProductDto updateProductDto)
+        public async Task<ReadProductDto?> UpdateProductService(int id, UpdateProductDto updateProductDto)
         {
             var product = await _productRepository.GetById(id);
             if (product != null)
             {
                 _mapper.Map(updateProductDto, product);
-
                 await _productRepository.Update(product);
-                return product;
+
+                var result = _mapper.Map<ReadProductDto>(product);
+                return result;
             }
             else
             {
@@ -104,7 +119,6 @@ namespace ProductValidation.Services
                 CategoryName = p.Category?.Name, // lazy loading
                 Brand = p.Brand
             });
-
         }
 
         // Pagination, Sorting, Filtering, Searching, AutoMapper Projection

@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace ProductValidation.Models
+namespace ProductValidation.DTOs.User
 {
     public class CreateUserDto
     {

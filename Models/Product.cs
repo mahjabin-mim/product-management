@@ -9,6 +9,7 @@ namespace ProductValidation.Models
         public int Id { get; set; }
 
         [Required]
+        [MaxLength(20)]
         public required string Name { get; set; }
 
         [Required]
@@ -18,11 +19,13 @@ namespace ProductValidation.Models
         public required int Stock { get; set; }
 
         [Required]
+        [MaxLength(20)]
         public required string Brand { get; set; }
 
         [Required]
-        [ForeignKey("CategoryId")]
-        public int CategoryId { get; set; }
-        public virtual Category Category { get; set; }
+        [MaxLength(20)]
+        [ForeignKey("CategoryName")]
+        public string? CategoryName { get; set; }
+        public virtual Category? Category { get; set; }
     }
 }

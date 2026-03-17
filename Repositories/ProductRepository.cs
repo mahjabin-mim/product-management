@@ -36,7 +36,7 @@ namespace ProductValidation.Repositories
 
         public async Task<Product> Create(Product product)
         {
-            _dbContext.Products.Add(product);
+            await _dbContext.Products.AddAsync(product);
             await _dbContext.SaveChangesAsync();
             return product;
         }

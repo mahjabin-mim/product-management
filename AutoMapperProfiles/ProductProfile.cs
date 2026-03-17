@@ -8,12 +8,9 @@ namespace ProductValidation.AutoMapperProfiles
     {
         public ProductProfile()
         {
-            CreateMap<Product, CreateUserDto>();
-            CreateMap<CreateUserDto, Product>();
-            CreateMap<Product, UpdateProductDto>();
-            CreateMap<UpdateProductDto, Product>();
+            CreateMap<CreateProductDto, Product>();
             CreateMap<Product, ReadProductDto>();
-            CreateMap<ReadProductDto, Product>();
+            CreateMap<UpdateProductDto, Product>();
         }
     }
 }

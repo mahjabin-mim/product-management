@@ -50,6 +50,7 @@ namespace ProductValidation.Controllers
             return Ok(product);
         }
 
+        [AllowAnonymous]
         [HttpGet("getbyrange")]
         public async Task<IActionResult> GetByRange([FromQuery] decimal minPrice, [FromQuery] decimal maxPrice)
         {

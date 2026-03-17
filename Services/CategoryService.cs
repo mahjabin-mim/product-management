@@ -1,10 +1,11 @@
 using ProductValidation.Models;
 using ProductValidation.DTOs.Category;
 using ProductValidation.Repositories.Interfaces;
+using ProductValidation.Services.Interfaces;
 
 namespace ProductValidation.Services
 {
-    public class CategoryService
+    public class CategoryService : ICategorySetService
     {
         private readonly ICategoryRepository _categoryRepository;
 
@@ -13,14 +14,15 @@ namespace ProductValidation.Services
             _categoryRepository = categoryRepository;
         }
 
-        public Category CreateCategoryService(CreateCategoryDto createCategoryDto)
+        public async Task<Category> CreateCategoryService(CreateCategoryDto createCategoryDto)
         {
             var newCategory = new Category
             {
                 Name = createCategoryDto.Name
             };
 
-            return _categoryRepository.Create(newCategory);
+            await _categoryRepository.Create(newCategory);
+            return newCategory;
         }
     }
 }

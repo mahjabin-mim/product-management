@@ -5,7 +5,7 @@ namespace ProductValidation.Services.Interfaces
 {
     public interface ICategorySetService
     {
-        Category CreateCategoryService(CreateCategoryDto createCategoryDto);
+        public Task<Category> CreateCategoryService(CreateCategoryDto createCategoryDto);
         
     };
 }

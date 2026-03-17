@@ -14,11 +14,17 @@ namespace ProductValidation.Repositories
             _dbContext = dbContext;
         }
 
-        public Category Create(Category category)
+        public async Task<Category> Create(Category category)
         {
-            _dbContext.Categories.Add(category);
-            _dbContext.SaveChanges();
+            await _dbContext.Categories.AddAsync(category);
+            await _dbContext.SaveChangesAsync();
             return category;
+        }
+
+        public async Task<Category?> GetByName(string name)
+        {
+            return await _dbContext.Categories
+                .FirstOrDefaultAsync(c => c.Name == name);
         }
     }
 }

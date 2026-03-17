@@ -4,6 +4,7 @@ namespace ProductValidation.Repositories.Interfaces
 {
     public interface ICategoryRepository
     {
-        Category Create(Category category);
+        public Task<Category> Create(Category category);
+        public Task<Category?> GetByName(string name);
     }
 }

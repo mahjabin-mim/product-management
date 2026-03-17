@@ -11,10 +11,10 @@ namespace ProductValidation.Repositories
         {
             _dbContext = dbContext;
         }
-        public User Create(User user)
+        public async Task<User> Create(User user)
         {
-            _dbContext.Users.Add(user);
-            _dbContext.SaveChanges();
+            await _dbContext.Users.AddAsync(user);
+            await _dbContext.SaveChangesAsync();
             return user;
         }
     }

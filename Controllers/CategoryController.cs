@@ -15,9 +15,9 @@ namespace ProductValidation.Controllers
         }
 
         [HttpPost("create")]
-        public IActionResult Create([FromBody] CreateCategoryDto createCategoryDto)
+        public async Task<IActionResult> Create([FromBody] CreateCategoryDto createCategoryDto)
         {
-            var category = _setService.CreateCategoryService(createCategoryDto);
+            var category = await _setService.CreateCategoryService(createCategoryDto);
             return Ok(category);
         }
   

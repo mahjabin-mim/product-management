@@ -22,6 +22,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IProductGetService, ProductService>();
 builder.Services.AddScoped<IProductSetService, ProductService>();
 builder.Services.AddScoped<IUserSetService, UserService>();
+builder.Services.AddScoped<ICategorySetService, CategoryService>();
 
 builder.Services.AddScoped<AuthService>();
 

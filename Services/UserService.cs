@@ -1,4 +1,5 @@
 using ProductValidation.Models;
+using ProductValidation.DTOs.User;
 using ProductValidation.Repositories.Interfaces;
 using ProductValidation.Services.Interfaces;
 using ProductValidation.Enums;
@@ -12,7 +13,7 @@ namespace ProductValidation.Services
         {
             _userRepository = userRepository;
         }
-        public User CreateUserService(CreateUserDto createUserDto)
+        public async Task<User> CreateUserService(CreateUserDto createUserDto)
         {
             var newUser = new User
             {
@@ -21,7 +22,8 @@ namespace ProductValidation.Services
                 Role = Enum.Parse<UserRole>(createUserDto.Role)
             };
 
-            return _userRepository.Create(newUser);
+            await _userRepository.Create(newUser);
+            return newUser;
         }
     }
 }

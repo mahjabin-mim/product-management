@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using ProductValidation.Models;
+using ProductValidation.DTOs.User;
 using ProductValidation.Services.Interfaces;
 
 namespace ProductValidation.Controllers
@@ -15,9 +15,9 @@ namespace ProductValidation.Controllers
         }
         
         [HttpPost("create")]
-        public IActionResult Create([FromBody] CreateUserDto createUserDto)
+        public async Task<IActionResult> Create([FromBody] CreateUserDto createUserDto)
         {
-            var user = _setService.CreateUserService(createUserDto);
+            var user = await _setService.CreateUserService(createUserDto);
             return Ok(user);
         }
     }

@@ -7,10 +7,14 @@ namespace ProductValidation.Models
     {
         [Key]
         public int Id { get; set; }
+
         [Required]
+        [MaxLength(20)]
         public required string Username { get; set; }
+
         [Required]
         public required string Password { get; set; } 
+        
         [Required]
         public required UserRole Role { get; set; }
     }
