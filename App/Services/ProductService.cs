@@ -14,7 +14,6 @@ namespace ProductValidation.Services
         private readonly IProductRepository _productRepository;
         private readonly ICategoryRepository _categoryRepository;
         private readonly ILogger<ProductService> _logger;
-
         private readonly IMapper _mapper;
 
         public ProductService(IProductRepository productRepository, ICategoryRepository categoryRepository, ILogger<ProductService> logger, IMapper mapper)

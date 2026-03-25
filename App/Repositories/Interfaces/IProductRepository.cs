@@ -7,7 +7,7 @@ namespace ProductValidation.Repositories.Interfaces
     {
         public Task<IEnumerable<Product>> GetAll();
 
-        public Task<Product> GetById(int id);
+        public Task<Product?> GetById(int id);
 
         public Task<Product> Create(Product product);
 
