@@ -369,8 +369,8 @@ obj/
 .idea/
 *.user
 *.suo
-*.csproj
-*.sln
+# *.csproj
+# *.sln
 appsettings.Development.json
 appsettings.json
 

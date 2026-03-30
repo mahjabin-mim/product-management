@@ -41,12 +41,6 @@ builder.Services.AddAutoMapper(typeof(Program));
 // Add Caching
 builder.Services.AddMemoryCache();
 
-builder.Services.AddStackExchangeRedisCache(options =>
-{
-    options.Configuration = builder.Configuration.GetConnectionString("Redis");
-    options.InstanceName = "ProductValidation:";
-});
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
